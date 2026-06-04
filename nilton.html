@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nilton Costa — Fullstack Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f5f2ec;
+      --ink: #111010;
+      --accent: #c84b1e;
+      --muted: #7a746a;
+      --line: #c8c2b8;
+      --card: #ede9e1;
+      --white: #ffffff;
+      --mono: 'DM Mono', monospace;
+      --display: 'Syne', sans-serif;
+      --body: 'DM Sans', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--body);
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* ─── LANGUAGE TOGGLE ─── */
+    .lang-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      background: var(--ink);
+      color: var(--bg);
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      padding: 8px 14px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .lang-btn:hover { background: var(--accent); }
+
+    /* ─── WRAPPER ─── */
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 50px 80px;
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 24px;
+      border-bottom: 1.5px solid var(--ink);
+      padding-bottom: 28px;
+      margin-bottom: 48px;
+    }
+
+    .name {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: clamp(2.8rem, 6vw, 4.2rem);
+      line-height: 0.95;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+    }
+
+    .name em {
+      color: var(--accent);
+      font-style: normal;
+    }
+
+    .fullname {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+
+    .tagline {
+      font-family: var(--body);
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 300;
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    .header-right {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .contact-item {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 7px;
+    }
+
+    .contact-item a { color: var(--muted); text-decoration: none; }
+    .contact-item a:hover { color: var(--accent); }
+
+    .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+    .status-badge {
+      margin-top: 8px;
+      align-self: flex-end;
+      background: var(--ink);
+      color: var(--bg);
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pulse {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* ─── MAIN GRID ─── */
+    .grid {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 0 48px;
+    }
+
+    /* ─── SECTION LABEL ─── */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 3px;
+      position: sticky;
+      top: 20px;
+    }
+
+    /* ─── SECTION ─── */
+    .section {
+      display: contents;
+    }
+
+    .section-body {
+      border-top: 1px solid var(--line);
+      padding-top: 24px;
+      padding-bottom: 40px;
+    }
+
+    /* ─── ABOUT ─── */
+    .about-text {
+      font-size: 0.97rem;
+      line-height: 1.75;
+      color: #2a2825;
+      font-weight: 300;
+      max-width: 520px;
+    }
+
+    .soft-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .soft-tag {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      border: 1px solid var(--line);
+      padding: 4px 10px;
+      color: var(--muted);
+    }
+
+    /* ─── EXPERIENCE ─── */
+    .exp-item {
+      margin-bottom: 30px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid var(--line);
+    }
+    .exp-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+    .exp-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 3px;
+    }
+
+    .exp-role {
+      font-family: var(--display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .exp-date {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .exp-company {
+      font-size: 0.82rem;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    .exp-desc {
+      font-size: 0.88rem;
+      color: #3a3832;
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    .exp-desc li { margin-left: 16px; margin-bottom: 4px; }
+
+    .stack-line {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 10px;
+      letter-spacing: 0.02em;
+    }
+
+    .stack-line strong { color: var(--ink); }
+
+    /* ─── PROJECTS ─── */
+    .proj-item {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .proj-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+    .proj-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .proj-name {
+      font-family: var(--display);
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .proj-badge {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--accent);
+      color: var(--white);
+      padding: 2px 8px;
+    }
+
+    .proj-desc {
+      font-size: 0.86rem;
+      color: #3a3832;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* ─── SKILLS ─── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 32px;
+    }
+
+    .skill-group-title {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .skill-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .skill-pill {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      background: var(--card);
+      border: 1px solid var(--line);
+      padding: 3px 9px;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1.5px solid var(--ink);
+      padding-top: 20px;
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-name {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: 0.85rem;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+
+    .footer-note {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── PRINT ─── */
+    @media print {
+      .lang-btn { display: none; }
+      body { background: white; }
+      .page { padding: 30px 40px; }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 680px) {
+      .page { padding: 40px 24px 60px; }
+      header { grid-template-columns: 1fr; }
+      .header-right { text-align: left; }
+      .contact-item { justify-content: flex-start; }
+      .status-badge { align-self: flex-start; }
+      .grid { grid-template-columns: 1fr; gap: 0; }
+      .section-label { position: relative; top: auto; padding-top: 0; border-top: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 0; }
+      .section-body { border-top: none; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .name { font-size: 2.2rem; }
+    }
+
+    /* ─── FADE IN ─── */
+    .page { animation: fadeUp 0.4s ease both; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<button class="lang-btn" onclick="toggleLanguage()">EN / PT</button>
+
+<div class="page">
+
+  <!-- ─── HEADER ─── -->
+  <header>
+    <div>
+      <h1 class="name">Nilton<br /><em>Costa</em></h1>
+      <p class="fullname">Nilton Carlos Domingas Da Costa</p>
+      <p class="tagline" data-key="tagline">Especialista em aplicações web escaláveis & design de interface intuitivo</p>
+    </div>
+    <div class="header-right">
+      <div class="contact-item"><div class="dot"></div> niltoncost186@gmail.com</div>
+      <div class="contact-item"><div class="dot"></div> Luanda, Angola</div>
+      <div class="contact-item"><div class="dot"></div> <a href="https://github.com/NiltonCarlosdawg" target="_blank">github.com/NiltonCarlosdawg</a></div>
+      <div class="contact-item"><div class="dot"></div> <a href="https://www.linkedin.com/in/nilton-costa-a04916277" target="_blank">linkedin.com/in/nilton-costa</a></div>
+      <div class="status-badge">
+        <span class="pulse"></span>
+        <span data-key="status">Disponível para projetos</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── CONTENT GRID ─── -->
+  <div class="grid">
+
+    <!-- SOBRE -->
+    <div class="section-label" data-key="about-label">Sobre</div>
+    <div class="section-body">
+      <p class="about-text" data-key="about-text">
+        Desenvolvedor Full Stack com sede em Luanda, focado em transformar problemas complexos em soluções de software elegantes e performáticas. Construo ecossistemas digitais — do banco de dados à interface — com atenção obsessiva a clean code, escalabilidade e experiência do utilizador.
+      </p>
+      <div class="soft-skills">
+        <span class="soft-tag" data-key="ss1">Comunicação Assertiva</span>
+        <span class="soft-tag" data-key="ss2">Aprendizado Contínuo</span>
+        <span class="soft-tag" data-key="ss3">Clean Code</span>
+        <span class="soft-tag" data-key="ss4">Resolução de Problemas</span>
+      </div>
+    </div>
+
+    <!-- EXPERIÊNCIA -->
+    <div class="section-label" data-key="exp-label">Experiência</div>
+    <div class="section-body">
+
+      <div class="exp-item">
+        <div class="exp-top">
+          <span class="exp-role" data-key="role0">Co-Founder &amp; COO</span>
+          <span class="exp-date" data-key="date0">Jan 2026 — Presente</span>
+        </div>
+        <div class="exp-company">VERANO Labs</div>
+        <ul class="exp-desc">
+          <li data-key="exp0-1">Liderança técnica e estratégica na construção de produtos de software focados no mercado angolano.</li>
+          <li data-key="exp0-2">Gestão de roadmap de produto, arquitectura de sistemas e coordenação de equipa de desenvolvimento.</li>
+          <li data-key="exp0-3">Presença confirmada como expositor no <strong>ANGOTIC 2026</strong>, maior evento de tecnologia de Angola.</li>
+        </ul>
+        <div class="stack-line"><strong>Stack:</strong> React · Next.js · React Native · Node.js · TypeScript · PostgreSQL · Elysia/Bun</div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-top">
+          <span class="exp-role" data-key="role1">Fullstack Developer</span>
+          <span class="exp-date" data-key="date1">Ago 2025 — Presente</span>
+        </div>
+        <div class="exp-company">MilVendas Lda</div>
+        <ul class="exp-desc">
+          <li data-key="exp1-1">Desenvolvimento de ecossistema de e-commerce e CMS de alta escalabilidade para o mercado angolano.</li>
+          <li data-key="exp1-2">Implementação de modelos de Machine Learning (ALS) para sistema de recomendações personalizadas.</li>
+          <li data-key="exp1-3">Arquitectura de APIs RESTful com foco em performance e gestão de dados em PostgreSQL nativo.</li>
+        </ul>
+        <div class="stack-line"><strong>Stack:</strong> Next.js · Node.js · TypeScript · PostgreSQL · ALS Models</div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-top">
+          <span class="exp-role" data-key="role2">Software Developer</span>
+          <span class="exp-date" data-key="date2">Nov 2025 — Presente</span>
+        </div>
+        <div class="exp-company">CalungaSoft <span style="color:var(--muted);font-style:normal;font-size:0.78rem;">(Prestador de Serviço)</span></div>
+        <ul class="exp-desc">
+          <li data-key="exp2-1">Integração de WhatsApp Business API (via Baileys) com sistemas CRM multi-tenant para automação de vendas e suporte ao cliente.</li>
+          <li data-key="exp2-2">Arquitectura de plataforma de chat multi-tenant com gestão de sessões QR, templates de mensagens e endereçamento LID.</li>
+          <li data-key="exp2-3">Optimização de performance de APIs e gestão de base de dados nativa em ambiente de produção Linux.</li>
+        </ul>
+        <div class="stack-line"><strong>Stack:</strong> Elysia/Bun · Fastify · Drizzle ORM · PostgreSQL · Redis · BullMQ · Baileys · WhatsApp Business API · Socket.IO · Linux</div>
+      </div>
+
+    </div>
+
+    <!-- PROJETOS -->
+    <div class="section-label" data-key="proj-label">Projectos</div>
+    <div class="section-body">
+
+      <div class="proj-item">
+        <div class="proj-top">
+          <span class="proj-name">VERANO Labs</span>
+          <span class="proj-badge" data-key="badge1">Co-Founder</span>
+        </div>
+        <p class="proj-desc" data-key="proj1">Startup de tecnologia angolana com foco em soluções digitais adaptadas à realidade local — desde plataformas de delivery e finanças pessoais até sistemas de comunicação empresarial.</p>
+      </div>
+
+      <div class="proj-item">
+        <div class="proj-top">
+          <span class="proj-name">Kino</span>
+          <span class="proj-badge" data-key="badge2b">Lead Dev</span>
+        </div>
+        <p class="proj-desc" data-key="proj2b">Plataforma de delivery hiperlocal focada no bairro Kilamba/KK5000, Luanda. App mobile em React Native com NativeWind v4, dashboard para parceiros restaurantes e estratégia de go-to-market em execução.</p>
+      </div>
+
+      <div class="proj-item">
+        <div class="proj-top">
+          <span class="proj-name">Kamba Finance</span>
+          <span class="proj-badge" data-key="badge2">Criador</span>
+        </div>
+        <p class="proj-desc" data-key="proj2">Assistente financeiro inteligente com IA para gestão de finanças pessoais em AOA (Kwanza), desenvolvido especificamente para a realidade económica angolana.</p>
+        <div class="stack-line" style="margin-top:8px"><strong>Stack:</strong> React · TypeScript · Anthropic API · SSE Streaming · Intent Classifier · Tool Registry · Semantic Memory</div>
+      </div>
+
+      <div class="proj-item">
+        <div class="proj-top">
+          <span class="proj-name">MilVendas Platform</span>
+          <span class="proj-badge" data-key="badge3">Lead Dev</span>
+        </div>
+        <p class="proj-desc" data-key="proj3">Plataforma de e-commerce e CMS para gestão de portfólios e lojas online, com motor de recomendação integrado.</p>
+      </div>
+
+    </div>
+
+    <!-- COMPETÊNCIAS -->
+    <div class="section-label" data-key="skills-label">Competências</div>
+    <div class="section-body">
+      <div class="skills-grid">
+
+        <div>
+          <div class="skill-group-title" data-key="sk1-title">Core Engineering</div>
+          <div class="skill-pills">
+            <span class="skill-pill">React</span>
+            <span class="skill-pill">Next.js</span>
+            <span class="skill-pill">React Native</span>
+            <span class="skill-pill">Expo</span>
+            <span class="skill-pill">NativeWind</span>
+            <span class="skill-pill">TypeScript</span>
+            <span class="skill-pill">Node.js</span>
+            <span class="skill-pill">Elysia/Bun</span>
+            <span class="skill-pill">Fastify</span>
+            <span class="skill-pill">Laravel</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="skill-group-title" data-key="sk2-title">Base de Dados & Infra</div>
+          <div class="skill-pills">
+            <span class="skill-pill">PostgreSQL</span>
+            <span class="skill-pill">Drizzle ORM</span>
+            <span class="skill-pill">Prisma</span>
+            <span class="skill-pill">Redis</span>
+            <span class="skill-pill">BullMQ</span>
+            <span class="skill-pill">Socket.IO</span>
+            <span class="skill-pill">Linux Admin</span>
+            <span class="skill-pill">REST APIs</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="skill-group-title" data-key="sk3-title">Especialidades</div>
+          <div class="skill-pills">
+            <span class="skill-pill">Machine Learning</span>
+            <span class="skill-pill">ALS Models</span>
+            <span class="skill-pill">LLM / AI Integration</span>
+            <span class="skill-pill">WhatsApp API</span>
+            <span class="skill-pill">Multi-tenant SaaS</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="skill-group-title" data-key="sk4-title">Frontend & Design</div>
+          <div class="skill-pills">
+            <span class="skill-pill">Tailwind CSS</span>
+            <span class="skill-pill">Framer Motion</span>
+            <span class="skill-pill">Three.js</span>
+            <span class="skill-pill">Figma</span>
+            <span class="skill-pill">Performance / SEO</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FORMAÇÃO -->
+    <div class="section-label" data-key="edu-label">Formação</div>
+    <div class="section-body">
+
+      <div class="exp-item">
+        <div class="exp-top">
+          <span class="exp-role" data-key="edu-role1">Técnico de Informática (TCC)</span>
+          <span class="exp-date" data-key="edu-date1">2023 — 2026</span>
+        </div>
+        <div class="exp-company">IMTELC — Instituto Médio de Tecnologias, Línguas, Cultura e Ciência</div>
+        <ul class="exp-desc">
+          <li data-key="edu1-1">Projecto de conclusão de curso: <strong>KAMBA Finance</strong> — assistente financeiro inteligente com IA para o mercado angolano.</li>
+        </ul>
+      </div>
+
+    </div>
+
+  </div><!-- end .grid -->
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <span class="footer-name">Nilton Costa</span>
+    <span class="footer-note" data-key="footer-note">Luanda, Angola · 2026</span>
+  </footer>
+
+</div><!-- end .page -->
+
+<script>
+  const t = {
+    pt: {
+      tagline: 'Especialista em aplicações web escaláveis & design de interface intuitivo',
+      status: 'Disponível para projetos',
+      'about-label': 'Sobre',
+      'about-text': 'Desenvolvedor Full Stack com sede em Luanda, focado em transformar problemas complexos em soluções de software elegantes e performáticas. Construo ecossistemas digitais — do banco de dados à interface — com atenção obsessiva a clean code, escalabilidade e experiência do utilizador.',
+      ss1: 'Comunicação Assertiva', ss2: 'Aprendizado Contínuo', ss3: 'Clean Code', ss4: 'Resolução de Problemas',
+      'exp-label': 'Experiência',
+      role0: 'Co-Founder & COO', date0: 'Jan 2026 — Presente',
+      'exp0-1': 'Liderança técnica e estratégica na construção de produtos de software focados no mercado angolano.',
+      'exp0-2': 'Gestão de roadmap de produto, arquitectura de sistemas e coordenação de equipa de desenvolvimento.',
+      'exp0-3': 'Presença confirmada como expositor no ANGOTIC 2026, maior evento de tecnologia de Angola.',
+      role1: 'Fullstack Developer', date1: 'Ago 2025 — Presente',
+      'exp1-1': 'Desenvolvimento de ecossistema de e-commerce e CMS de alta escalabilidade para o mercado angolano.',
+      'exp1-2': 'Implementação de modelos de Machine Learning (ALS) para sistema de recomendações personalizadas.',
+      'exp1-3': 'Arquitectura de APIs RESTful com foco em performance e gestão de dados em PostgreSQL nativo.',
+      role2: 'Software Developer', date2: 'Nov 2025 — Presente',
+      'exp2-1': 'Integração de WhatsApp Business API (via Baileys) com sistemas CRM multi-tenant para automação de vendas e suporte ao cliente.',
+      'exp2-2': 'Arquitectura de plataforma de chat multi-tenant com gestão de sessões QR, templates de mensagens e endereçamento LID.',
+      'exp2-3': 'Optimização de performance de APIs e gestão de base de dados nativa em ambiente de produção Linux.',
+      'proj-label': 'Projectos',
+      badge1: 'Co-Founder', badge2: 'Criador', badge2b: 'Lead Dev', badge3: 'Lead Dev',
+      proj1: 'Startup de tecnologia angolana com foco em soluções digitais adaptadas à realidade local — desde plataformas de delivery e finanças pessoais até sistemas de comunicação empresarial.',
+      proj2b: 'Plataforma de delivery hiperlocal focada no bairro Kilamba/KK5000, Luanda. App mobile em React Native com NativeWind v4, dashboard para parceiros restaurantes e estratégia de go-to-market em execução.',
+      proj2: 'Assistente financeiro inteligente com IA para gestão de finanças pessoais em AOA (Kwanza), desenvolvido especificamente para a realidade económica angolana.',
+      proj3: 'Plataforma de e-commerce e CMS para gestão de portfólios e lojas online, com motor de recomendação integrado.',
+      'skills-label': 'Competências',
+      'sk1-title': 'Core Engineering', 'sk2-title': 'Base de Dados & Infra', 'sk3-title': 'Especialidades', 'sk4-title': 'Frontend & Design',
+      'edu-label': 'Formação',
+      'edu-role1': 'Técnico de Informática (TCC)',
+      'edu-date1': '2023 — 2026',
+      'edu1-1': 'Projecto de conclusão de curso: KAMBA Finance — assistente financeiro inteligente com IA para o mercado angolano.',
+      'footer-note': 'Luanda, Angola · 2026',
+    },
+    en: {
+      tagline: 'Specialist in scalable web applications & intuitive interface design',
+      status: 'Available for projects',
+      'about-label': 'About',
+      'about-text': 'Full Stack Developer based in Luanda, focused on transforming complex problems into elegant, high-performance software solutions. I build digital ecosystems — from database to interface — with obsessive attention to clean code, scalability, and user experience.',
+      ss1: 'Assertive Communication', ss2: 'Continuous Learning', ss3: 'Clean Code', ss4: 'Problem Solving',
+      'exp-label': 'Experience',
+      role0: 'Co-Founder & COO', date0: 'Jan 2026 — Present',
+      'exp0-1': 'Technical and strategic leadership in building software products focused on the Angolan market.',
+      'exp0-2': 'Product roadmap management, systems architecture, and development team coordination.',
+      'exp0-3': 'Confirmed exhibitor presence at ANGOTIC 2026, Angola\'s largest technology event.',
+      role1: 'Fullstack Developer', date1: 'Aug 2025 — Present',
+      'exp1-1': 'Development of a highly scalable e-commerce ecosystem and CMS for the Angolan market.',
+      'exp1-2': 'Implementation of Machine Learning models (ALS) for a personalised recommendation engine.',
+      'exp1-3': 'RESTful API architecture focused on performance and native PostgreSQL data management.',
+      role2: 'Software Developer', date2: 'Nov 2025 — Present',
+      'exp2-1': 'Integration of WhatsApp Business API (via Baileys) with multi-tenant CRM systems for sales and customer support automation.',
+      'exp2-2': 'Architecture of a multi-tenant chat platform with QR session management, message templates, and LID addressing.',
+      'exp2-3': 'API performance optimisation and native database management in a Linux production environment.',
+      'proj-label': 'Projects',
+      badge1: 'Co-Founder', badge2: 'Creator', badge2b: 'Lead Dev', badge3: 'Lead Dev',
+      proj1: 'Angolan technology startup focused on digital solutions adapted to the local reality — from delivery platforms and personal finance to enterprise communication systems.',
+      proj2b: 'Hyperlocal delivery platform focused on the Kilamba/KK5000 neighbourhood, Luanda. Mobile app built in React Native with NativeWind v4, restaurant partner dashboard, and go-to-market strategy in execution.',
+      proj2: 'AI-powered financial assistant for personal finance management in AOA (Kwanza), built specifically for the Angolan economic context.',
+      proj3: 'E-commerce platform and CMS for portfolio and online store management, with an integrated recommendation engine.',
+      'skills-label': 'Skills',
+      'sk1-title': 'Core Engineering', 'sk2-title': 'Database & Infra', 'sk3-title': 'Specialties', 'sk4-title': 'Frontend & Design',
+      'edu-label': 'Education',
+      'edu-role1': 'Technical Degree in Computer Science (Final Project)',
+      'edu-date1': '2023 — 2026',
+      'edu1-1': 'Final project: KAMBA Finance — AI-powered financial assistant for the Angolan market.',
+      'footer-note': 'Luanda, Angola · 2026',
+    }
+  };
+
+  let lang = 'pt';
+
+  function toggleLanguage() {
+    lang = lang === 'pt' ? 'en' : 'pt';
+    document.querySelectorAll('[data-key]').forEach(el => {
+      const k = el.getAttribute('data-key');
+      if (t[lang][k]) el.textContent = t[lang][k];
+    });
+    document.querySelector('.lang-btn').textContent = lang === 'pt' ? 'EN / PT' : 'PT / EN';
+    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'l') { e.preventDefault(); toggleLanguage(); }
+    if (e.ctrlKey && e.key === 'p') { e.preventDefault(); window.print(); }
+  });
+</script>
+
+</body>
+</html>
